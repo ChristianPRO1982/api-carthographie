@@ -11,7 +11,7 @@ app = FastAPI()
 async def root():
     return RedirectResponse(url="/docs")
 
-# @app.get("/songs_title", summary="all songs (only title)", tags=["Songs"])
+@app.get("/songs_title", summary="all songs (only title)", tags=["Songs"])
 async def get_songs():
     """
     # all songs / toutes les chansons
