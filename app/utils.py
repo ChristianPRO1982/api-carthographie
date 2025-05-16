@@ -20,6 +20,7 @@ class cARThographieDB:
             self.password = os.getenv("DOCKER_FUNCTIONAL_PASSWORD")
             self.database = os.getenv("DOCKER_FUNCTIONAL_DATABASE")
         self.connection = None
+        self.SQL_LIMIT = os.getenv("SQL_LIMIT", 1000)
 
 
     def connect(self):
@@ -39,10 +40,10 @@ class cARThographieDB:
             self.connection = None
 
 
-    def get_all_songs_title(self):
+    def get_all_songs_title(self, page: int):
         self.connect()
         cursor = self.connection.cursor(dictionary=True)
-        cursor.execute("""
+        request = """
   SELECT CONCAT(title,
                 CASE
                     WHEN sub_title != '' THEN CONCAT(' - ', sub_title)
@@ -57,17 +58,24 @@ class cARThographieDB:
                 "/") AS url
     FROM l_songs ls
 ORDER BY title, sub_title
-""")
+   LIMIT %s, %s
+"""
+        offset = (page - 1) * int(self.SQL_LIMIT)
+        params = [offset, int(self.SQL_LIMIT)]
+        cursor.execute(request, params)
         songs = cursor.fetchall()
         cursor.close()
         self.close()
         return songs
 
 
-    def get_all_songs_verses(self):
+    def get_all_songs_verses(self, page: int):
         self.connect()
         cursor = self.connection.cursor(dictionary=True)
-        cursor.execute("""
+        request = """
+WITH page AS (SELECT song_id
+                FROM l_songs
+               LIMIT %s, %s)
    SELECT CONCAT(ls.title,
                  CASE
                      WHEN ls.sub_title != '' THEN CONCAT(' - ', ls.sub_title)
@@ -87,18 +95,22 @@ ORDER BY title, sub_title
           lv.followed
      FROM l_songs ls
 LEFT JOIN l_verses lv ON lv.song_id = ls.song_id
+    WHERE ls.song_id IN (SELECT song_id FROM page)
  ORDER BY ls.title, ls.sub_title, lv.num
-""")
+"""
+        offset = (page - 1) * int(self.SQL_LIMIT)
+        params = [offset, int(self.SQL_LIMIT)]
+        cursor.execute(request, params)
         songs = cursor.fetchall()
         cursor.close()
         self.close()
         return songs
 
 
-    def get_all_songs_full(self):
+    def get_all_songs_full(self, page: int):
         self.connect()
         cursor = self.connection.cursor(dictionary=True)
-        cursor.execute("""
+        cursor.execute(f"""
    SELECT CONCAT(ls.title,
                  CASE
                      WHEN ls.sub_title != '' THEN CONCAT(' - ', ls.sub_title)
@@ -131,10 +143,11 @@ LEFT JOIN l_verses lv ON lv.song_id = ls.song_id
                     full_text = self.get_lyrics(verses)
                     songs.append({
                         "full_title": full_title,
-                        "url": song["url"],
+                        "url": url,
                         "HTML_text": full_text
                     })
                 full_title = song["full_title"]
+                url = song["url"]
                 verses = []
             else:
                 fields = {}
@@ -144,9 +157,17 @@ LEFT JOIN l_verses lv ON lv.song_id = ls.song_id
                 fields["chorus"] = song["chorus"]
                 fields["followed"] = song["followed"]
                 verses.append(fields)
+        full_text = self.get_lyrics(verses)
+        songs.append({
+            "full_title": full_title,
+            "url": url,
+            "HTML_text": full_text
+        })
 
         self.close()
-        return songs
+        start_index = (page - 1) * int(self.SQL_LIMIT)
+        end_index = start_index + int(self.SQL_LIMIT)
+        return songs[start_index:end_index]
     
 
     @staticmethod
@@ -177,3 +198,17 @@ LEFT JOIN l_verses lv ON lv.song_id = ls.song_id
 
         
         return lyrics
+    
+
+    def get_all_songs_pages(self):
+        self.connect()
+        cursor = self.connection.cursor(dictionary=True)
+        cursor.execute(f"""
+SELECT CEIL(COUNT(1) / {self.SQL_LIMIT}) AS pages,
+       {self.SQL_LIMIT} AS song_per_page
+  FROM l_songs
+""")
+        songs = cursor.fetchall()
+        cursor.close()
+        self.close()
+        return songs

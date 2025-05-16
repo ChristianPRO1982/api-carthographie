@@ -1,35 +1,57 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Query
 from fastapi.responses import JSONResponse
 from datetime import datetime
 import httpx
 from fastapi.responses import RedirectResponse
 from .utils import cARThographieDB
 
+
 app = FastAPI()
+
 
 @app.get("/", include_in_schema=False)
 async def root():
     return RedirectResponse(url="/docs")
 
+
+@app.get("/pages", summary="1 page = 1000 songs", tags=["Songs"])
+async def get_pages():
+    """
+    # 1 page = 1000 songs / 1 page = 1000 chansons
+    - this API return the number of pages for find all songs
+    - cette API retourne le nombre de pages pour trouver toutes les chansons
+    """
+    db = cARThographieDB()
+    pages = db.get_all_songs_pages()
+    return pages
+
+
 @app.get("/songs_title", summary="all songs (only title)", tags=["Songs"])
-async def get_songs():
+async def get_songs(page: int = Query(1, gt=0)):
     """
     # all songs / toutes les chansons
+    ## json
     - Retrieve all songs from the database:
       - full title
       - web link (URL)
     - Obtenez toutes les chansons de la base de données :
       - titre complet
       - lien web (URL)
+
+    ## url
+    - /songs_title?page=1
+    - /songs_title?page=2
     """
     db = cARThographieDB()
-    songs = db.get_all_songs_title()
+    songs = db.get_all_songs_title(page=page)
     return songs
 
+
 @app.get("/songs_verses", summary="all songs (choruses/verses)", tags=["Songs"])
-async def get_songs_verses():
+async def get_songs_verses(page: int = Query(1, gt=0)):
     """
     # all songs with choruses/verses / toutes les chansons avec refrains/couplets
+    ## json
     - Retrieve all songs from the database:
       - full title
       - web link (URL)
@@ -47,15 +69,21 @@ async def get_songs_verses():
     - **num_verse:** number of chorus/verse (display number) / numéro du refrain/couplet (numéro d'affichage)
     - **chorus:** 0 = verse, 1 = chorus, 2 = verse like a chorus (same order like a verse but diplayed like a chorus) / 0 = couplet, 1 = refrain, 2 = couplet comme un refrain (même ordre qu'un couplet mais affiché comme un refrain)
     - **followed:** 0 = not followed, 1 = followed (followed by the next verse) / 0 = non suivi, 1 = suivi (suivi par le couplet suivant)
+
+    ## url
+    - /songs_verses?page=1
+    - /songs_verses?page=2
     """
     db = cARThographieDB()
-    songs_verses = db.get_all_songs_verses()
+    songs_verses = db.get_all_songs_verses(page)
     return songs_verses
 
+
 @app.get("/songs_full", summary="all songs (full text)", tags=["Songs"])
-async def get_all_songs_full():
+async def get_all_songs_full(page: int = Query(1, gt=0)):
     """
     # all songs with full text / toutes les chansons avec texte complet
+    ## json
     - Retrieve all songs from the database:
       - full title
       - web link (URL)
@@ -64,10 +92,15 @@ async def get_all_songs_full():
       - titre complet
       - lien web (URL)
       - texte complet : un seul champ pour tout le texte de la chanson
+
+    ## url
+    - /songs_full?page=1
+    - /songs_full?page=2
     """
     db = cARThographieDB()
-    songs_verses = db.get_all_songs_full()
+    songs_verses = db.get_all_songs_full(page)
     return songs_verses
+
 
 @app.get("/health", summary="API ready?", tags=["Monitoring"])
 def health_check():
@@ -75,6 +108,7 @@ def health_check():
         "status": "ok",
         "timestamp": datetime.utcnow().isoformat()
     }
+
 
 @app.get("/about", tags=["Meta"])
 async def about():
@@ -86,6 +120,14 @@ async def about():
     ### /songs_title
     - Get all songs (only title).
     - Obtenez toutes les chansons (seulement le titre).
+
+    ### /songs_verses
+    - Get all songs with choruses/verses.
+    - Obtenez toutes les chansons avec refrains/couplets.
+
+    ### /songs_full
+    - Get all songs with one HTML field for all song's text.
+    - Obtenez toutes les chansons avec un champ HTML pour tout le texte de la chanson.
     
     ## other features
 
@@ -100,6 +142,7 @@ async def about():
             )
         }
     )
+
 
 GITHUB_API = "https://api.github.com/repos/ChristianPRO1982/api-carthographie/releases/latest"
 @app.get("/version", summary="GitHub version", tags=["Meta"])
