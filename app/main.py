@@ -76,7 +76,7 @@ def health_check():
         "timestamp": datetime.utcnow().isoformat()
     }
 
-# @app.get("/about", tags=["Meta"])
+@app.get("/about", tags=["Meta"])
 async def about():
     """
     # cARThographie API Features / Fonctionnalités de l'API cARThographie
