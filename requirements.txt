@@ -1,5 +1,6 @@
-pytest==8.3.5
-python-dotenv==1.0.1
+pytest
+python-dotenv
 fastapi
 uvicorn
 mysql-connector-python
+httpx

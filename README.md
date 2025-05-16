@@ -8,3 +8,9 @@
 [![License](https://img.shields.io/github/license/ChristianPRO1982/api-carthographie.svg)](https://github.com/ChristianPRO1982/api-carthographie/blob/main/LICENSE)
 
 API to provide DB data in json format
+
+## command examples
+
+```bash
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+```
