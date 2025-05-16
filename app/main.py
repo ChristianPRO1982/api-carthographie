@@ -1,12 +1,23 @@
 from fastapi import FastAPI, Query
-from fastapi.responses import JSONResponse
-from datetime import datetime
+from fastapi.responses import JSONResponse, RedirectResponse
+from fastapi.middleware.cors import CORSMiddleware
 import httpx
-from fastapi.responses import RedirectResponse
+from datetime import datetime
 from .utils import cARThographieDB
 
 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "https://www.carthographie.fr",
+        "https://carthographie.fr",
+        "https://api.carthographie.fr"
+    ],
+    allow_credentials=False,
+    allow_methods=["GET"],
+    allow_headers=["*"],
+)
 
 
 @app.get("/", include_in_schema=False)
