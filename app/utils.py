@@ -5,7 +5,7 @@ import mysql.connector
 
 class cARThographieDB:
     def __init__(self):
-        load_dotenv()
+        load_dotenv(override=True) # uniquement en DEV local
         self.DEBUG = os.getenv("DEBUG", "False").lower() == "true"
         if self.DEBUG:
             print("DEBUG mode is ON")
@@ -19,6 +19,10 @@ class cARThographieDB:
             self.user = os.getenv("DOCKER_FUNCTIONAL_USER")
             self.password = os.getenv("DOCKER_FUNCTIONAL_PASSWORD")
             self.database = os.getenv("DOCKER_FUNCTIONAL_DATABASE")
+            print("host: ", self.host)
+            print("user: ", self.user)
+            print("password: ", self.password)
+            print("database: ", self.database)
         self.connection = None
         self.SQL_LIMIT = os.getenv("SQL_LIMIT", 1000)
 
