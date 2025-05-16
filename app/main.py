@@ -52,7 +52,7 @@ async def get_songs_verses():
     songs_verses = db.get_all_songs_verses()
     return songs_verses
 
-# @app.get("/songs_full", summary="all songs (full text)", tags=["Songs"])
+@app.get("/songs_full", summary="all songs (full text)", tags=["Songs"])
 async def get_all_songs_full():
     """
     # all songs with full text / toutes les chansons avec texte complet
