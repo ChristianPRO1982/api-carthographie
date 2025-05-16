@@ -69,7 +69,7 @@ async def get_all_songs_full():
     songs_verses = db.get_all_songs_full()
     return songs_verses
 
-# @app.get("/health", summary="API ready?", tags=["Monitoring"])
+@app.get("/health", summary="API ready?", tags=["Monitoring"])
 def health_check():
     return {
         "status": "ok",
