@@ -3,7 +3,8 @@ from fastapi.responses import JSONResponse, RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
 import httpx
 from datetime import datetime
-from .utils import cARThographieDB
+from utils import cARThographieDB # PROD
+# from .utils import cARThographieDB # DEV
 
 
 app = FastAPI()
