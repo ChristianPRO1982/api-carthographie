@@ -102,7 +102,7 @@ async def about():
     )
 
 GITHUB_API = "https://api.github.com/repos/ChristianPRO1982/api-carthographie/releases/latest"
-# @app.get("/version", summary="GitHub version", tags=["Meta"])
+@app.get("/version", summary="GitHub version", tags=["Meta"])
 async def version():
     async with httpx.AsyncClient() as client:
         response = await client.get(GITHUB_API)
