@@ -26,7 +26,7 @@ async def get_songs():
     songs = db.get_all_songs_title()
     return songs
 
-# @app.get("/songs_verses", summary="all songs (choruses/verses)", tags=["Songs"])
+@app.get("/songs_verses", summary="all songs (choruses/verses)", tags=["Songs"])
 async def get_songs_verses():
     """
     # all songs with choruses/verses / toutes les chansons avec refrains/couplets
