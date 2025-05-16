@@ -14,10 +14,10 @@ async def root():
     return RedirectResponse(url="/docs")
 
 
-@app.get("/pages", summary="1 page = 1000 songs", tags=["Songs"])
+@app.get("/nb_pages", summary="1 page = X songs", tags=["Songs"])
 async def get_pages():
     """
-    # 1 page = 1000 songs / 1 page = 1000 chansons
+    # 1 page = X songs / 1 page = X chansons
     - this API return the number of pages for find all songs
     - cette API retourne le nombre de pages pour trouver toutes les chansons
     """
@@ -116,6 +116,10 @@ async def about():
     # cARThographie API Features / Fonctionnalités de l'API cARThographie
 
     ## SONGS
+
+    ### /nb_pages
+    - Get the number of pages for all songs.
+    - Obtenez le nombre de pages pour toutes les chansons.
 
     ### /songs_title
     - Get all songs (only title).
