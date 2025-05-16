@@ -14,3 +14,21 @@ API to provide DB data in json format
 ```bash
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
+
+```bash
+docker compose down && docker compose up -d --remove-orphans
+```
+
+```bash
+docker compose down && docker compose up -d --remove-orphans
+```
+
+```bash
+docker network create networkname
+```
+
+```bash
+docker rmi xxxxx
+docker image prune
+docker system prune
+```
