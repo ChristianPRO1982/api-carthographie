@@ -132,7 +132,7 @@ LEFT JOIN l_verses lv ON lv.song_id = ls.song_id
                     songs.append({
                         "full_title": full_title,
                         "url": song["url"],
-                        "text": full_text
+                        "HTML_text": full_text
                     })
                 full_title = song["full_title"]
                 verses = []
