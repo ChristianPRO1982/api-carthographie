@@ -7,8 +7,8 @@ import subprocess
 from pathlib import Path
 from docx import Document
 import fitz  # PyMuPDF
-# from utils import cARThographieDB # PROD
-from .utils import cARThographieDB # DEV
+from utils import cARThographieDB # PROD
+# from .utils import cARThographieDB # DEV
 
 
 app = FastAPI()
@@ -182,8 +182,8 @@ async def version():
 
 @app.post("/convert_pdf_to_txt", summary="Convert PDF or DOCX to TXT", tags=["Conversion"])
 def convert_pdf_to_txt():
-    input_path = Path("/n8n_files/contrat/contrat.pdf")
-    output_path = Path("/n8n_files/contrat/contrat.txt")
+    input_path = Path("/files/contrat.pdf")
+    output_path = Path("/files/contrat.txt")
 
     if not input_path.exists():
         return {"success": False, "error": "File not found"}
@@ -200,8 +200,8 @@ def convert_pdf_to_txt():
 
 @app.post("/convert_docx_to_txt", summary="Convert DOCX or DOC to TXT", tags=["Conversion"])
 def convert_docx_to_txt():
-    input_path = Path("/n8n_files/contrat/contrat.docx")
-    output_path = Path("/n8n_files/contrat/contrat.txt")
+    input_path = Path("/files/contrat.docx")
+    output_path = Path("/files/contrat.txt")
 
     if not input_path.exists():
         return {"success": False, "error": "File not found"}
