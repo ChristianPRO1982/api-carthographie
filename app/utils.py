@@ -5,7 +5,7 @@ import mysql.connector
 
 class cARThographieDB:
     def __init__(self):
-        load_dotenv()
+        load_dotenv(override=True) # uniquement en DEV local
         self.DEBUG = os.getenv("DEBUG", "False").lower() == "true"
         if self.DEBUG:
             print("DEBUG mode is ON")
@@ -15,10 +15,14 @@ class cARThographieDB:
             self.database = os.getenv("LOCAL_FUNCTIONAL_DATABASE")
         else:
             print("DEBUG mode is OFF")
-            self.host = os.getenv("DOCKER_FUNCTIONAL_HOST")
-            self.user = os.getenv("DOCKER_FUNCTIONAL_USER")
-            self.password = os.getenv("DOCKER_FUNCTIONAL_PASSWORD")
-            self.database = os.getenv("DOCKER_FUNCTIONAL_DATABASE")
+            self.host = os.getenv("DOCKER_MYSQL_HOST")
+            self.user = os.getenv("DOCKER_MYSQL_USER")
+            self.password = os.getenv("DOCKER_MYSQL_PASSWORD")
+            self.database = os.getenv("DOCKER_MYSQL_DATABASE")
+            print("host: ", self.host)
+            print("user: ", self.user)
+            print("password: ", self.password)
+            print("database: ", self.database)
         self.connection = None
         self.SQL_LIMIT = os.getenv("SQL_LIMIT", 1000)
 
@@ -48,10 +52,6 @@ class cARThographieDB:
                 CASE
                     WHEN sub_title != '' THEN CONCAT(' - ', sub_title)
                     ELSE ''
-                END,
-                CASE
-                    WHEN artist != '' THEN CONCAT(' [', artist, ']')
-                    ELSE ''
                 END) AS full_title,
          CONCAT("https://www.carthographie.fr/songs/song/",
                 song_id,
@@ -79,10 +79,6 @@ WITH page AS (SELECT song_id
    SELECT CONCAT(ls.title,
                  CASE
                      WHEN ls.sub_title != '' THEN CONCAT(' - ', ls.sub_title)
-                     ELSE ''
-                 END,
-                 CASE
-                     WHEN ls.artist != '' THEN CONCAT(' [', ls.artist, ']')
                      ELSE ''
                  END) AS full_title,
           CONCAT("https://www.carthographie.fr/songs/song/",

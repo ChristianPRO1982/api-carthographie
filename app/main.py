@@ -3,7 +3,12 @@ from fastapi.responses import JSONResponse, RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
 import httpx
 from datetime import datetime
-from .utils import cARThographieDB
+import subprocess
+from pathlib import Path
+from docx import Document
+import fitz  # PyMuPDF
+from utils import cARThographieDB # PROD
+# from .utils import cARThographieDB # DEV
 
 
 app = FastAPI()
@@ -173,3 +178,49 @@ async def version():
             }
         else:
             return {"error": "Impossible de récupérer la version GitHub"}
+
+
+@app.post("/convert_pdf_to_txt", summary="Convert PDF or DOCX to TXT", tags=["Conversion"])
+def convert_pdf_to_txt():
+    input_path = Path("/files/contrat.pdf")
+    output_path = Path("/files/contrat.txt")
+
+    if not input_path.exists():
+        return {"success": False, "error": "File not found"}
+
+    try:
+        text = extract_text_from_pdf(input_path)
+
+        output_path.write_text(text)
+        return {"success": True}
+
+    except Exception as e:
+        return {"success": False, "error": str(e)}
+    
+
+@app.post("/convert_docx_to_txt", summary="Convert DOCX or DOC to TXT", tags=["Conversion"])
+def convert_docx_to_txt():
+    input_path = Path("/files/contrat.docx")
+    output_path = Path("/files/contrat.txt")
+
+    if not input_path.exists():
+        return {"success": False, "error": "File not found"}
+
+    try:
+        text = extract_text_from_docx(input_path)
+
+        output_path.write_text(text)
+        return {"success": True}
+
+    except Exception as e:
+        return {"success": False, "error": str(e)}
+
+
+def extract_text_from_pdf(pdf_path: Path) -> str:
+    doc = fitz.open(pdf_path)
+    return "\n".join(page.get_text() for page in doc)
+
+
+def extract_text_from_docx(docx_path: Path) -> str:
+    doc = Document(docx_path)
+    return "\n".join(p.text for p in doc.paragraphs)
