@@ -1,3 +1,18 @@
+# [1.2.0](https://github.com/ChristianPRO1982/api-carthographie/compare/v1.1.0...v1.2.0) (2025-07-08)
+
+
+### Bug Fixes
+
+* add routes for convert pdf or docx to txt ([2d3eb4d](https://github.com/ChristianPRO1982/api-carthographie/commit/2d3eb4d29b2015d51ba5685fa145b807affbc55f))
+* db changes: delete artist feature ([4dbf469](https://github.com/ChristianPRO1982/api-carthographie/commit/4dbf4695b6b160152ada62e5b18f25295fedd481))
+* naming .env's variables ([9746685](https://github.com/ChristianPRO1982/api-carthographie/commit/97466856f100cc1ef17afc22590adc2804e5e4cc))
+* remove "." in imports on main.py ([4c41d86](https://github.com/ChristianPRO1982/api-carthographie/commit/4c41d86084510ab150b25c76f15df3c0149ee60e))
+
+
+### Features
+
+* add routes for convert PDF to TXT and DOCX to PDF ([33404a7](https://github.com/ChristianPRO1982/api-carthographie/commit/33404a7a0cec51febcd882479930c1dd2c98bfb5))
+
 # [1.1.0](https://github.com/ChristianPRO1982/api-carthographie/compare/v1.0.0...v1.1.0) (2025-05-16)
 
 
