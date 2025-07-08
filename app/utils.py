@@ -52,10 +52,6 @@ class cARThographieDB:
                 CASE
                     WHEN sub_title != '' THEN CONCAT(' - ', sub_title)
                     ELSE ''
-                END,
-                CASE
-                    WHEN artist != '' THEN CONCAT(' [', artist, ']')
-                    ELSE ''
                 END) AS full_title,
          CONCAT("https://www.carthographie.fr/songs/song/",
                 song_id,
@@ -83,10 +79,6 @@ WITH page AS (SELECT song_id
    SELECT CONCAT(ls.title,
                  CASE
                      WHEN ls.sub_title != '' THEN CONCAT(' - ', ls.sub_title)
-                     ELSE ''
-                 END,
-                 CASE
-                     WHEN ls.artist != '' THEN CONCAT(' [', ls.artist, ']')
                      ELSE ''
                  END) AS full_title,
           CONCAT("https://www.carthographie.fr/songs/song/",
