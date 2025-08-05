@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/ChristianPRO1982/api-carthographie/compare/v1.2.0...v1.3.0) (2025-08-05)
+
+
+### Features
+
+* test CD to build to dockerhub ([93d57e0](https://github.com/ChristianPRO1982/api-carthographie/commit/93d57e09e3ac08b5e28ed6a2fb3585e56ef7882a))
+
 # [1.2.0](https://github.com/ChristianPRO1982/api-carthographie/compare/v1.1.0...v1.2.0) (2025-07-08)
 
 
