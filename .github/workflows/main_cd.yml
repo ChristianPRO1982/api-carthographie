@@ -1,20 +1,57 @@
-name: CD - Main Branch - Publish Docker Image
+name: CI/CD – Main Branch
 
 on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:
 
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
 jobs:
-  build-and-push:
+  # 1️⃣ Continuous Integration: Semantic Release
+  release:
     runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install npm dependencies
+        run: npm install
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+      - name: Run Semantic Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx semantic-release
+
+  # 2️⃣ Build & Push Docker Image (only on main)
+  build-and-push:
+    needs: release
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up QEMU (for multi-platform builds)
+      - name: Set up QEMU (multi-arch)
         uses: docker/setup-qemu-action@v2
 
       - name: Set up Docker Buildx
@@ -32,26 +69,25 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: |
-            carthographie/api-carthographie:latest
+          tags:
+            - carthographie/api-carthographie:latest
 
-
+  # 3️⃣ Deploy to OVH VPS (after Docker push)
   deploy:
-    name: Deploy to OVH VPS
     needs: build-and-push
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
 
     steps:
-    - name: Deploy via SSH
-      uses: appleboy/ssh-action@v0.1.10
-      with:
-        host: ${{ secrets.SSH_HOST }}
-        username: ${{ secrets.SSH_USER }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        port: ${{ secrets.SSH_PORT }}
-        script: |
-          cd lyrics-slide-show
-          docker compose pull
-          docker compose up -d
-          docker image prune -f
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd lyrics-slide-show
+            docker compose pull
+            docker compose up -d
+            docker image prune -f
