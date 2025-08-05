@@ -33,7 +33,6 @@ async def root():
 @app.get("/nb_pages", summary="1 page = X songs", tags=["Songs"])
 async def get_pages():
     """
-    test 5
     # 1 page = X songs / 1 page = X chansons
     - this API return the number of pages for find all songs
     - cette API retourne le nombre de pages pour trouver toutes les chansons
