@@ -1,3 +1,10 @@
+## [1.3.3](https://github.com/ChristianPRO1982/api-carthographie/compare/v1.3.2...v1.3.3) (2025-08-05)
+
+
+### Bug Fixes
+
+* CD test 2 ([610f574](https://github.com/ChristianPRO1982/api-carthographie/commit/610f5740d188e0487d164128a51d2181a3001007))
+
 ## [1.3.2](https://github.com/ChristianPRO1982/api-carthographie/compare/v1.3.1...v1.3.2) (2025-08-05)
 
 
