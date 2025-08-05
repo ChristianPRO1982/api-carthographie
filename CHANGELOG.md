@@ -1,3 +1,14 @@
+## [1.4.1](https://github.com/ChristianPRO1982/api-carthographie/compare/v1.4.0...v1.4.1) (2025-08-05)
+
+
+### Bug Fixes
+
+* change name of yaml files ([c187f96](https://github.com/ChristianPRO1982/api-carthographie/commit/c187f96e71c3ae12f6d062b5748462c622bff96d))
+* delete comments in yaml ([d3d253a](https://github.com/ChristianPRO1982/api-carthographie/commit/d3d253a27a53532d2695c9bfa561cf679460e05a))
+* indentation ([53c5530](https://github.com/ChristianPRO1982/api-carthographie/commit/53c55300311de2aa49904acf9e1e600575d969e2))
+* merge CI & CD ([236a29b](https://github.com/ChristianPRO1982/api-carthographie/commit/236a29ba812ef666b9554af680623a1626b2f82e))
+* rollback ([26896dc](https://github.com/ChristianPRO1982/api-carthographie/commit/26896dcde65dc261fae39859d59d87809fecda4a))
+
 # [1.4.0](https://github.com/ChristianPRO1982/api-carthographie/compare/v1.3.4...v1.4.0) (2025-08-05)
 
 
