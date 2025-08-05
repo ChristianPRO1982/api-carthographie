@@ -1,3 +1,13 @@
+# [2.0.0](https://github.com/ChristianPRO1982/api-carthographie/compare/v1.4.1...v2.0.0) (2025-08-05)
+
+
+* Merge pull request [#16](https://github.com/ChristianPRO1982/api-carthographie/issues/16) from ChristianPRO1982/dev ([9a094c4](https://github.com/ChristianPRO1982/api-carthographie/commit/9a094c414e1c6f3cb1cdcdad109308227bebd614))
+
+
+### BREAKING CHANGES
+
+* CI/CD
+
 ## [1.4.1](https://github.com/ChristianPRO1982/api-carthographie/compare/v1.4.0...v1.4.1) (2025-08-05)
 
 
