@@ -15,7 +15,6 @@ permissions:
   pull-requests: write
 
 jobs:
-  # 1️⃣ Continuous Integration: Semantic Release
   release:
     runs-on: ubuntu-latest
 
@@ -41,7 +40,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npx semantic-release
 
-  # 2️⃣ Build & Push Docker Image (only on main)
   build-and-push:
     needs: release
     runs-on: ubuntu-latest
@@ -72,7 +70,6 @@ jobs:
           tags:
             - carthographie/api-carthographie:latest
 
-  # 3️⃣ Deploy to OVH VPS (after Docker push)
   deploy:
     needs: build-and-push
     runs-on: ubuntu-latest
