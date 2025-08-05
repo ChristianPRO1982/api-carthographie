@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
   workflow_dispatch:
 
 permissions:
@@ -15,6 +12,7 @@ permissions:
   pull-requests: write
 
 jobs:
+  # 1️⃣ Semantic Release
   release:
     runs-on: ubuntu-latest
 
@@ -40,10 +38,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npx semantic-release
 
+  # 2️⃣ Build & push Docker image
   build-and-push:
     needs: release
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
 
     steps:
       - name: Checkout repository
@@ -70,10 +68,10 @@ jobs:
           tags:
             - carthographie/api-carthographie:latest
 
+  # 3️⃣ Deploy on OVH VPS
   deploy:
     needs: build-and-push
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
 
     steps:
       - name: Deploy via SSH
