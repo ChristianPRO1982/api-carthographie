@@ -34,7 +34,6 @@ jobs:
           push: true
           tags: |
             carthographie/api-carthographie:latest
-            # carthographie/api-carthographie:${{ github.sha }}
 
 
   deploy:
