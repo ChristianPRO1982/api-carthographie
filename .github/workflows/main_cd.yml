@@ -1,5 +1,4 @@
-# Publish Docker image to Docker Hub on push to main
-name: Publish Docker Image
+name: CD - Main Branch - Publish Docker Image
 
 on:
   push:
