@@ -1,3 +1,12 @@
+## [2.0.1](https://github.com/ChristianPRO1982/api-carthographie/compare/v2.0.0...v2.0.1) (2025-08-07)
+
+
+### Bug Fixes
+
+* change name CI to CICD ([3f4f305](https://github.com/ChristianPRO1982/api-carthographie/commit/3f4f30550c87062e19ea638563d9de4ec80d90bc))
+* new route ([50d9484](https://github.com/ChristianPRO1982/api-carthographie/commit/50d94842351d64e6a604a1a9827065171e660602))
+* new routes for dump ([d28f32f](https://github.com/ChristianPRO1982/api-carthographie/commit/d28f32f04d49e5ef146ba69464256e514f3912fd))
+
 # [2.0.0](https://github.com/ChristianPRO1982/api-carthographie/compare/v1.4.1...v2.0.0) (2025-08-05)
 
 
