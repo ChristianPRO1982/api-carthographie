@@ -44,158 +44,6 @@ class cARThographieDB:
             self.connection = None
 
 
-    def get_all_songs_title(self, page: int):
-        self.connect()
-        cursor = self.connection.cursor(dictionary=True)
-        request = """
-  SELECT CONCAT(title,
-                CASE
-                    WHEN sub_title != '' THEN CONCAT(' - ', sub_title)
-                    ELSE ''
-                END) AS full_title,
-         CONCAT("https://www.carthographie.fr/songs/song/",
-                song_id,
-                "/") AS url
-    FROM l_songs ls
-ORDER BY title, sub_title
-   LIMIT %s, %s
-"""
-        offset = (page - 1) * int(self.SQL_LIMIT)
-        params = [offset, int(self.SQL_LIMIT)]
-        cursor.execute(request, params)
-        songs = cursor.fetchall()
-        cursor.close()
-        self.close()
-        return songs
-
-
-    def get_all_songs_verses(self, page: int):
-        self.connect()
-        cursor = self.connection.cursor(dictionary=True)
-        request = """
-WITH page AS (SELECT song_id
-                FROM l_songs
-               LIMIT %s, %s)
-   SELECT CONCAT(ls.title,
-                 CASE
-                     WHEN ls.sub_title != '' THEN CONCAT(' - ', ls.sub_title)
-                     ELSE ''
-                 END) AS full_title,
-          CONCAT("https://www.carthographie.fr/songs/song/",
-                 ls.song_id,
-                 "/") AS url,
-          lv.`text`,
-          lv.num,
-          lv.num_verse,
-          lv.chorus,
-          lv.followed
-     FROM l_songs ls
-LEFT JOIN l_verses lv ON lv.song_id = ls.song_id
-    WHERE ls.song_id IN (SELECT song_id FROM page)
- ORDER BY ls.title, ls.sub_title, lv.num
-"""
-        offset = (page - 1) * int(self.SQL_LIMIT)
-        params = [offset, int(self.SQL_LIMIT)]
-        cursor.execute(request, params)
-        songs = cursor.fetchall()
-        cursor.close()
-        self.close()
-        return songs
-
-
-    def get_all_songs_full(self, page: int):
-        self.connect()
-        cursor = self.connection.cursor(dictionary=True)
-        cursor.execute(f"""
-   SELECT CONCAT(ls.title,
-                 CASE
-                     WHEN ls.sub_title != '' THEN CONCAT(' - ', ls.sub_title)
-                     ELSE ''
-                 END,
-                 CASE
-                     WHEN ls.artist != '' THEN CONCAT(' [', ls.artist, ']')
-                     ELSE ''
-                 END) AS full_title,
-          CONCAT("https://www.carthographie.fr/songs/song/",
-                 ls.song_id,
-                 "/") AS url,
-          lv.`text`,
-          lv.num,
-          lv.num_verse,
-          lv.chorus,
-          lv.followed
-     FROM l_songs ls
-LEFT JOIN l_verses lv ON lv.song_id = ls.song_id
- ORDER BY ls.title, ls.sub_title, lv.num
-""")
-        songs_full = cursor.fetchall()
-        cursor.close()
-
-        songs = []
-        full_title = ""
-        for song in songs_full:
-            if song["full_title"] != full_title:
-                if full_title != "":
-                    full_text = self.get_lyrics(verses)
-                    songs.append({
-                        "full_title": full_title,
-                        "url": url,
-                        "HTML_text": full_text
-                    })
-                full_title = song["full_title"]
-                url = song["url"]
-                verses = []
-            else:
-                fields = {}
-                fields["text"] = song["text"]
-                fields["num"] = song["num"]
-                fields["num_verse"] = song["num_verse"]
-                fields["chorus"] = song["chorus"]
-                fields["followed"] = song["followed"]
-                verses.append(fields)
-        full_text = self.get_lyrics(verses)
-        songs.append({
-            "full_title": full_title,
-            "url": url,
-            "HTML_text": full_text
-        })
-
-        self.close()
-        start_index = (page - 1) * int(self.SQL_LIMIT)
-        end_index = start_index + int(self.SQL_LIMIT)
-        return songs[start_index:end_index]
-    
-
-    @staticmethod
-    def get_lyrics(verses)->str:
-        choruses = []
-        lyrics = ""
-
-        # Get all choruses
-        for verse in verses:
-            if verse["chorus"] == 1:
-                choruses.append("<b>" + verse["text"].replace("\n", "<br>") + "</b>")
-
-        start_by_chorus = True
-        for verse in verses:
-            if verse["chorus"] != 1:
-                if verse["text"] and verse["chorus"] != 2:
-                    lyrics += str(verse["num_verse"]) + ". " + verse["text"].replace("\n", "<br>") + "<br><br>"
-                if verse["text"] and verse["chorus"] == 2:
-                    lyrics += "<b>" + verse["text"].replace("\n", "<br>") + "</b><br><br>"
-                if not verse["followed"] and choruses:
-                    lyrics += "<br><br>".join(choruses) + "<br><br>"
-            elif start_by_chorus:
-                lyrics += "<br><br>".join(choruses) + "<br><br>"
-            start_by_chorus = False
-        
-        if not lyrics:
-            lyrics = "<br><br>".join(choruses)
-
-        
-        return lyrics
-    
-
     def get_all_songs_pages(self):
         self.connect()
         cursor = self.connection.cursor(dictionary=True)
@@ -208,3 +56,279 @@ SELECT CEIL(COUNT(1) / {self.SQL_LIMIT}) AS pages,
         cursor.close()
         self.close()
         return songs
+
+
+    def table_c_artists(self, api_key: str)-> list:
+        if api_key != os.getenv("API_KEY"):
+            return {"error": "Unauthorized"}
+        
+        self.connect()
+        cursor = self.connection.cursor(dictionary=True)
+        cursor.execute(f"""
+SELECT CONCAT('INSERT INTO c_artists VALUES (', artist_id, ', "', REPLACE(name, '"', '“'),'");') AS value
+  FROM c_artists
+""")
+        inserts = cursor.fetchall()
+        cursor.close()
+
+        json = []
+        for insert in inserts:
+            fields = {}
+            fields["INSERT"] = insert
+            json.append(fields)
+
+        self.close()
+
+        return json
+    
+
+    def table_c_artist_links(self, api_key: str) -> list:
+        if api_key != os.getenv("API_KEY"):
+            return {"error": "Unauthorized"}
+        
+        self.connect()
+        cursor = self.connection.cursor(dictionary=True)
+        cursor.execute(f"""
+SELECT CONCAT('INSERT INTO c_artist_links VALUES (', artist_id, ', "', REPLACE(link, '"', '“'),'");') AS value
+  FROM c_artist_links
+""")
+        inserts = cursor.fetchall()
+        cursor.close()
+
+        json = []
+        for insert in inserts:
+            fields = {}
+            fields["INSERT"] = insert
+            json.append(fields)
+
+        self.close()
+        return json
+    
+
+    def table_c_bands(self, api_key: str) -> list:
+        if api_key != os.getenv("API_KEY"):
+            return {"error": "Unauthorized"}
+        
+        self.connect()
+        cursor = self.connection.cursor(dictionary=True)
+        cursor.execute(f"""
+SELECT CONCAT('INSERT INTO c_bands VALUES (', band_id, ', "', REPLACE(name, '"', '“'),'");') AS value
+  FROM c_bands
+""")
+        inserts = cursor.fetchall()
+        cursor.close()
+
+        json = []
+        for insert in inserts:
+            fields = {}
+            fields["INSERT"] = insert
+            json.append(fields)
+
+        self.close()
+        return json
+    
+
+    def table_c_band_links(self, api_key: str) -> list:
+        if api_key != os.getenv("API_KEY"):
+            return {"error": "Unauthorized"}
+        
+        self.connect()
+        cursor = self.connection.cursor(dictionary=True)
+        cursor.execute(f"""
+SELECT CONCAT('INSERT INTO c_band_links VALUES (', band_id, ', "', REPLACE(link, '"', '“'),'");') AS value
+  FROM c_band_links
+""")
+        inserts = cursor.fetchall()
+        cursor.close()
+
+        json = []
+        for insert in inserts:
+            fields = {}
+            fields["INSERT"] = insert
+            json.append(fields)
+
+        self.close()
+        return json
+    
+
+    def table_c_group_user(self, api_key: str) -> list:
+        if api_key != os.getenv("API_KEY"):
+            return {"error": "Unauthorized"}
+        
+        self.connect()
+        cursor = self.connection.cursor(dictionary=True)
+        cursor.execute(f"""
+SELECT CONCAT('INSERT INTO c_group_user VALUES (', group_id, ', "', username,'", ', admin, ');') AS value
+  FROM c_group_user
+""")
+        inserts = cursor.fetchall()
+        cursor.close()
+
+        json = []
+        for insert in inserts:
+            fields = {}
+            fields["INSERT"] = insert
+            json.append(fields)
+
+        self.close()
+        return json
+    
+
+    def _table_c_group_user_ask_to_join(self, api_key: str) -> list:
+        if api_key != os.getenv("API_KEY"):
+            return {"error": "Unauthorized"}
+        
+        self.connect()
+        cursor = self.connection.cursor(dictionary=True)
+        cursor.execute(f"""
+SELECT CONCAT('INSERT INTO c_group_user_ask_to_join VALUES (', group_id, ', "', username,'");') AS value
+  FROM c_group_user_ask_to_join
+""")
+        inserts = cursor.fetchall()
+        cursor.close()
+
+        json = []
+        for insert in inserts:
+            fields = {}
+            fields["INSERT"] = insert
+            json.append(fields)
+
+        self.close()
+        return json
+    
+
+    def table_c_groups(self, api_key: str) -> list:
+        if api_key != os.getenv("API_KEY"):
+            return {"error": "Unauthorized"}
+        
+        self.connect()
+        cursor = self.connection.cursor(dictionary=True)
+        cursor.execute(f"""
+SELECT CONCAT('INSERT INTO c_groups VALUES (', group_id, ', "', name,'", "', REPLACE(info, '"', '“'),'", "', IFNULL(token, ""), '", ', private, ');') AS value
+  FROM c_groups
+""")
+        inserts = cursor.fetchall()
+        cursor.close()
+
+        json = []
+        for insert in inserts:
+            fields = {}
+            fields["INSERT"] = insert
+            json.append(fields)
+
+        self.close()
+        return json
+    
+
+    def table_c_user_change_email(self, api_key: str) -> list:
+        if api_key != os.getenv("API_KEY"):
+            return {"error": "Unauthorized"}
+        
+        self.connect()
+        cursor = self.connection.cursor(dictionary=True)
+        cursor.execute(f"""
+SELECT CONCAT('INSERT INTO c_user_change_email VALUES ("', username, '", "', token, '", "', create_time, '", "', last_email, '", "', new_email, '");') AS value
+  FROM c_user_change_email
+""")
+        inserts = cursor.fetchall()
+        cursor.close()
+
+        json = []
+        for insert in inserts:
+            fields = {}
+            fields["INSERT"] = insert
+            json.append(fields)
+
+        self.close()
+        return json
+
+    def table_c_users(self, api_key: str) -> list:
+        if api_key != os.getenv("API_KEY"):
+            return {"error": "Unauthorized"}
+        
+        self.connect()
+        cursor = self.connection.cursor(dictionary=True)
+        cursor.execute(f"""
+SELECT CONCAT('INSERT INTO c_users VALUES ("', username,'", "', REPLACE(theme, '"', '“'),'");') AS value
+  FROM c_users
+""")
+        inserts = cursor.fetchall()
+        cursor.close()
+
+        json = []
+        for insert in inserts:
+            fields = {}
+            fields["INSERT"] = insert
+            json.append(fields)
+
+        self.close()
+        return json
+    
+
+    def table_l_genres(self, api_key: str) -> list:
+        if api_key != os.getenv("API_KEY"):
+            return {"error": "Unauthorized"}
+        
+        self.connect()
+        cursor = self.connection.cursor(dictionary=True)
+        cursor.execute(f"""
+SELECT CONCAT('INSERT INTO l_genres VALUES (', genre_id, ', "', REPLACE(`group`, '"', '“'), '", "', REPLACE(name, '"', '“'), '");') AS value
+  FROM l_genres
+""")
+        inserts = cursor.fetchall()
+        cursor.close()
+
+        json = []
+        for insert in inserts:
+            fields = {}
+            fields["INSERT"] = insert
+            json.append(fields)
+
+        self.close()
+        return json
+
+
+    def table_l_site(self, api_key: str) -> list:
+        if api_key != os.getenv("API_KEY"):
+            return {"error": "Unauthorized"}
+        
+        self.connect()
+        cursor = self.connection.cursor(dictionary=True)
+        cursor.execute(f"""
+SELECT CONCAT('INSERT INTO l_site VALUES ("', language, '", "', REPLACE(title, '"', '“'), '", "', REPLACE(title_h1, '"', '“'), '", "', REPLACE(home_text, '"', '“'), '", "', REPLACE(bloc1_text, '"', '“'), '", "', REPLACE(bloc2_text, '"', '“'), '");') AS value
+  FROM l_site
+""")
+        inserts = cursor.fetchall()
+        cursor.close()
+
+        json = []
+        for insert in inserts:
+            fields = {}
+            fields["INSERT"] = insert
+            json.append(fields)
+
+        self.close()
+        return json
+    
+
+    def table_l_site_params(self, api_key: str) -> list:
+        if api_key != os.getenv("API_KEY"):
+            return {"error": "Unauthorized"}
+        
+        self.connect()
+        cursor = self.connection.cursor(dictionary=True)
+        cursor.execute(f"""
+SELECT CONCAT('INSERT INTO l_site_params VALUES (', verse_max_lines, ', ', verse_max_characters_for_a_line, ', "', REPLACE(FR_chorus_prefix, '"', '“'), '", "', REPLACE(FR_verse_prefix1, '"', '“'), '", "', REPLACE(FR_verse_prefix2, '"', '“'), '", "', REPLACE(EN_chorus_prefix, '"', '“'), '", "', REPLACE(EN_verse_prefix1, '"', '“'), '", "', REPLACE(EN_verse_prefix2, '"', '“'), '");') AS value
+  FROM l_site_params
+""")
+        inserts = cursor.fetchall()
+        cursor.close()
+
+        json = []
+        for insert in inserts:
+            fields = {}
+            fields["INSERT"] = insert
+            json.append(fields)
+
+        self.close()
+        return json
