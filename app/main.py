@@ -7,8 +7,8 @@ import subprocess
 from pathlib import Path
 from docx import Document
 import fitz  # PyMuPDF
-# from utils import cARThographieDB # PROD
-from .utils import cARThographieDB # DEV
+from utils import cARThographieDB # PROD
+# from .utils import cARThographieDB # DEV
 
 
 app = FastAPI()
