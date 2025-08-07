@@ -295,6 +295,27 @@ async def table_l_site_params(api_key: str = Query(..., description="API Key for
     return JSONResponse(content=lyrics_site_params)
 
 
+@app.get("/table_l_songs", summary="Songs", tags=["lyrics"])
+async def table_l_songs(api_key: str = Query(..., description="API Key for access")):
+    """
+    # all songs
+    ## json
+    - DUMP of l_songs table
+    - only INSERT SQL command
+
+    ## doc
+    - **api_key:** secret key to access this endpoint
+
+    ## url
+    - /table_l_songs?api_key=abcde
+    """
+    db = cARThographieDB()
+    songs = db.table_l_songs(api_key)
+    if "error" in songs:
+        return JSONResponse(status_code=401, content=songs)
+    return JSONResponse(content=songs)
+
+
 @app.get("/health", summary="API ready?", tags=["Monitoring"])
 def health_check():
     return {

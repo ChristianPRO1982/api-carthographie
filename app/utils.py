@@ -332,3 +332,26 @@ SELECT CONCAT('INSERT INTO l_site_params VALUES (', verse_max_lines, ', ', verse
 
         self.close()
         return json
+    
+
+    def table_l_songs(self, api_key: str) -> list:
+        if api_key != os.getenv("API_KEY"):
+            return {"error": "Unauthorized"}
+        
+        self.connect()
+        cursor = self.connection.cursor(dictionary=True)
+        cursor.execute(f"""
+SELECT CONCAT('INSERT INTO l_songs VALUES (', song_id, ', "', REPLACE(title, '"', '“'), '", "', REPLACE(sub_title, '"', '“'), '", "', REPLACE(description, '"', '“'), '", ', status, ', ', licensed, ');') AS value
+  FROM l_songs
+""")
+        inserts = cursor.fetchall()
+        cursor.close()
+
+        json = []
+        for insert in inserts:
+            fields = {}
+            fields["INSERT"] = insert
+            json.append(fields)
+
+        self.close()
+        return json
