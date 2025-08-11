@@ -55,7 +55,7 @@ async def table_c_artists(api_key: str = Query(..., description="API Key for acc
     - **api_key:** secret key to access this endpoint
 
     ## url
-    - /table_artists?api_key=abcde
+    - /table_c_artists?api_key=abcde
     """
     db = cARThographieDB()
     artists = db.table_c_artists(api_key)
@@ -76,7 +76,7 @@ async def table_c_artist_links(api_key: str = Query(..., description="API Key fo
     - **api_key:** secret key to access this endpoint
 
     ## url
-    - /table_artist_links?api_key=abcde
+    - /table_c_artist_links?api_key=abcde
     """
     db = cARThographieDB()
     artist_links = db.table_c_artist_links(api_key)
@@ -97,7 +97,7 @@ async def table_c_bands(api_key: str = Query(..., description="API Key for acces
     - **api_key:** secret key to access this endpoint
 
     ## url
-    - /table_bands?api_key=abcde
+    - /table_c_bands?api_key=abcde
     """
     db = cARThographieDB()
     bands = db.table_c_bands(api_key)
@@ -118,7 +118,7 @@ async def table_c_bands_links(api_key: str = Query(..., description="API Key for
     - **api_key:** secret key to access this endpoint
 
     ## url
-    - /table_bands_links?api_key=abcde
+    - /table_c_bands_links?api_key=abcde
     """
     db = cARThographieDB()
     band_links = db.table_c_band_links(api_key)
@@ -139,7 +139,7 @@ async def table_c_group_user(api_key: str = Query(..., description="API Key for 
     - **api_key:** secret key to access this endpoint
 
     ## url
-    - /table_group_user?api_key=abcde
+    - /table_c_group_user?api_key=abcde
     """
     db = cARThographieDB()
     group_users = db.table_c_group_user(api_key)
@@ -160,7 +160,7 @@ async def table_c_group_user_ask_to_join(api_key: str = Query(..., description="
     - **api_key:** secret key to access this endpoint
 
     ## url
-    - /table_group_user_ask_to_join?api_key=abcde
+    - /table_c_group_user_ask_to_join?api_key=abcde
     """
     db = cARThographieDB()
     group_user_ask_to_join = db._table_group_user_ask_to_join(api_key)
@@ -181,7 +181,7 @@ async def table_c_groups(api_key: str = Query(..., description="API Key for acce
     - **api_key:** secret key to access this endpoint
 
     ## url
-    - /table_groups?api_key=abcde
+    - /table_c_groups?api_key=abcde
     """
     db = cARThographieDB()
     groups = db.table_c_groups(api_key)
@@ -202,7 +202,7 @@ async def table_c_user_change_email(api_key: str = Query(..., description="API K
     - **api_key:** secret key to access this endpoint
 
     ## url
-    - /table_user_change_email?api_key=abcde
+    - /table_c_user_change_email?api_key=abcde
     """
     db = cARThographieDB()
     user_change_email = db.table_c_user_change_email(api_key)
@@ -223,7 +223,7 @@ async def table_c_users(api_key: str = Query(..., description="API Key for acces
     - **api_key:** secret key to access this endpoint
 
     ## url
-    - /table_users?api_key=abcde
+    - /table_c_users?api_key=abcde
     """
     db = cARThographieDB()
     users = db.table_c_users(api_key)
@@ -244,7 +244,7 @@ async def table_l_genres(api_key: str = Query(..., description="API Key for acce
     - **api_key:** secret key to access this endpoint
 
     ## url
-    - /table_c_genres?api_key=abcde
+    - /table_l_genres?api_key=abcde
     """
     db = cARThographieDB()
     genres = db.table_l_genres(api_key)
