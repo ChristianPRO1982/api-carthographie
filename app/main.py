@@ -7,8 +7,8 @@ import subprocess
 from pathlib import Path
 from docx import Document
 import fitz  # PyMuPDF
-from utils import cARThographieDB # PROD
-# from .utils import cARThographieDB # DEV
+# from utils import cARThographieDB # PROD
+from .utils import cARThographieDB # DEV
 
 
 app = FastAPI()
@@ -40,6 +40,19 @@ async def get_pages():
     db = cARThographieDB()
     pages = db.get_all_songs_pages()
     return pages
+
+
+@app.get("/dump_routes_list", summary="List of dump routes", tags=["API"])
+async def dump_routes_list(api_key: str = Query(..., description="API Key for access")):
+    """
+    # List of all routes
+    - this API returns a list of all available routes
+    """
+    db = cARThographieDB()
+    routes = db.dump_routes_list(api_key)
+    if "error" in routes:
+        return JSONResponse(status_code=401, content=routes)
+    return JSONResponse(content=routes)
 
 
 @app.get("/table_c_artists", summary="Artists", tags=["cARThographie"])
@@ -358,7 +371,7 @@ async def table_l_song_bands(api_key: str = Query(..., description="API Key for 
     return JSONResponse(content=song_bands)
 
 
-@app.get("/_table_l_song_genre", summary="Song Genres", tags=["Lyrics Slide Show"])
+@app.get("/table_l_song_genre", summary="Song Genres", tags=["Lyrics Slide Show"])
 async def table_l_song_genre(api_key: str = Query(..., description="API Key for access")):
     """
     # all song genres
