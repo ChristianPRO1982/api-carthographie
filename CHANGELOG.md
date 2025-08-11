@@ -1,3 +1,10 @@
+## [2.0.4](https://github.com/ChristianPRO1982/api-carthographie/compare/v2.0.3...v2.0.4) (2025-08-11)
+
+
+### Bug Fixes
+
+* debug docs of routes ([e644012](https://github.com/ChristianPRO1982/api-carthographie/commit/e644012aa3ebc4c49259b3e4e52b1880d0881727))
+
 ## [2.0.3](https://github.com/ChristianPRO1982/api-carthographie/compare/v2.0.2...v2.0.3) (2025-08-11)
 
 
