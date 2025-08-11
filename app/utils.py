@@ -56,6 +56,34 @@ SELECT CEIL(COUNT(1) / {self.SQL_LIMIT}) AS pages,
         cursor.close()
         self.close()
         return songs
+    
+
+    def dump_routes_list(self, api_key: str) -> list:
+        if api_key != os.getenv("API_KEY"):
+            return {"error": "Unauthorized"}
+        
+        return [
+            {"route": "/table_c_artists", "table": "c_artists"},
+            {"route": "/table_c_artist_links", "table": "c_artist_links"},
+            {"route": "/table_c_bands", "table": "c_bands"},
+            {"route": "/table_c_band_links", "table": "c_band_links"},
+            {"route": "/table_c_group_user", "table": "c_group_user"},
+            {"route": "/table_c_group_user_ask_to_join", "table": "c_group_user_ask_to_join"},
+            {"route": "/table_c_groups", "table": "c_groups"},
+            {"route": "/table_c_user_change_email", "table": "c_user_change_email"},
+            {"route": "/table_c_users", "table": "c_users"},
+            {"route": "/table_l_genres", "table": "l_genres"},
+            {"route": "/table_l_site", "table": "l_site"},
+            {"route": "/table_l_site_params", "table": "l_site_params"},
+            {"route": "/table_l_songs", "table": "l_songs"},
+            {"route": "/table_l_song_artists", "table": "l_song_artists"},
+            {"route": "/table_l_song_bands", "table": "l_song_bands"},
+            {"route": "/table_l_song_genre", "table": "l_song_genre"},
+            {"route": "/table_l_song_link", "table": "l_song_link"},
+            {"route": "/table_l_songs_mod_message", "table": "l_songs_mod_message"},
+            {"route": "/table_l_verses", "table": "l_verses"},
+            {"route": "/table_l_verse_prefixes", "table": "l_verse_prefixes"}
+        ]
 
 
     def table_c_artists(self, api_key: str)-> list:
@@ -174,7 +202,7 @@ SELECT CONCAT('INSERT INTO c_group_user VALUES (', group_id, ', "', username,'",
         return json
     
 
-    def _table_c_group_user_ask_to_join(self, api_key: str) -> list:
+    def table_c_group_user_ask_to_join(self, api_key: str) -> list:
         if api_key != os.getenv("API_KEY"):
             return {"error": "Unauthorized"}
         
@@ -403,7 +431,7 @@ SELECT CONCAT('INSERT INTO l_song_bands VALUES (', song_id, ', ', band_id, ');')
         return json
 
 
-    def _table_l_song_genre(self, api_key: str) -> list:
+    def table_l_song_genre(self, api_key: str) -> list:
         if api_key != os.getenv("API_KEY"):
             return {"error": "Unauthorized"}
         
