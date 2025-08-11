@@ -119,8 +119,8 @@ async def table_c_bands(api_key: str = Query(..., description="API Key for acces
     return JSONResponse(content=bands)
 
 
-@app.get("/table_c_bands_links", summary="Bands Links", tags=["cARThographie"])
-async def table_c_bands_links(api_key: str = Query(..., description="API Key for access")):
+@app.get("/table_c_band_links", summary="Bands Links", tags=["cARThographie"])
+async def table_c_band_links(api_key: str = Query(..., description="API Key for access")):
     """
     # all bands links
     ## json
@@ -131,7 +131,7 @@ async def table_c_bands_links(api_key: str = Query(..., description="API Key for
     - **api_key:** secret key to access this endpoint
 
     ## url
-    - /table_c_bands_links?api_key=abcde
+    - /table_c_band_links?api_key=abcde
     """
     db = cARThographieDB()
     band_links = db.table_c_band_links(api_key)
@@ -176,7 +176,7 @@ async def table_c_group_user_ask_to_join(api_key: str = Query(..., description="
     - /table_c_group_user_ask_to_join?api_key=abcde
     """
     db = cARThographieDB()
-    group_user_ask_to_join = db._table_group_user_ask_to_join(api_key)
+    group_user_ask_to_join = db.table_c_group_user_ask_to_join(api_key)
     if "error" in group_user_ask_to_join:
         return JSONResponse(status_code=401, content=group_user_ask_to_join)
     return JSONResponse(content=group_user_ask_to_join)
