@@ -1,3 +1,10 @@
+## [2.1.2](https://github.com/ChristianPRO1982/api-carthographie/compare/v2.1.1...v2.1.2) (2025-08-11)
+
+
+### Bug Fixes
+
+* naming for routes : /table_c_band_links & /table_c_group_user_ask_to_join ([052d7b8](https://github.com/ChristianPRO1982/api-carthographie/commit/052d7b809a51d41cd44fd593382ad72882c408a8))
+
 ## [2.1.1](https://github.com/ChristianPRO1982/api-carthographie/compare/v2.1.0...v2.1.1) (2025-08-11)
 
 
