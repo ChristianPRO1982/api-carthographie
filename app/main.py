@@ -232,7 +232,7 @@ async def table_c_users(api_key: str = Query(..., description="API Key for acces
     return JSONResponse(content=users)
 
 
-@app.get("/table_l_genres", summary="Genres", tags=["lyrics"])
+@app.get("/table_l_genres", summary="Genres", tags=["Lyrics Slide Show"])
 async def table_l_genres(api_key: str = Query(..., description="API Key for access")):
     """
     # all genres
@@ -253,7 +253,7 @@ async def table_l_genres(api_key: str = Query(..., description="API Key for acce
     return JSONResponse(content=genres)
 
 
-@app.get("/table_l_site", summary="Lyrics Sites", tags=["lyrics"])
+@app.get("/table_l_site", summary="Lyrics Sites", tags=["Lyrics Slide Show"])
 async def table_l_site(api_key: str = Query(..., description="API Key for access")):
     """
     # all lyrics sites
@@ -274,7 +274,7 @@ async def table_l_site(api_key: str = Query(..., description="API Key for access
     return JSONResponse(content=lyrics_sites)
 
 
-@app.get("/table_l_site_params", summary="Lyrics Site Params", tags=["lyrics"])
+@app.get("/table_l_site_params", summary="Lyrics Site Params", tags=["Lyrics Slide Show"])
 async def table_l_site_params(api_key: str = Query(..., description="API Key for access")):
     """
     # all lyrics site params
@@ -295,7 +295,7 @@ async def table_l_site_params(api_key: str = Query(..., description="API Key for
     return JSONResponse(content=lyrics_site_params)
 
 
-@app.get("/table_l_songs", summary="Songs", tags=["lyrics"])
+@app.get("/table_l_songs", summary="Songs", tags=["Lyrics Slide Show"])
 async def table_l_songs(api_key: str = Query(..., description="API Key for access")):
     """
     # all songs
@@ -314,6 +314,153 @@ async def table_l_songs(api_key: str = Query(..., description="API Key for acces
     if "error" in songs:
         return JSONResponse(status_code=401, content=songs)
     return JSONResponse(content=songs)
+
+
+@app.get("/table_l_song_artists", summary="Song Artists", tags=["Lyrics Slide Show"])
+async def table_l_song_artists(api_key: str = Query(..., description="API Key for access")):
+    """
+    # all song artists
+    ## json
+    - DUMP of l_song_artists table
+    - only INSERT SQL command
+
+    ## doc
+    - **api_key:** secret key to access this endpoint
+
+    ## url
+    - /table_l_song_artists?api_key=abcde
+    """
+    db = cARThographieDB()
+    song_artists = db.table_l_song_artists(api_key)
+    if "error" in song_artists:
+        return JSONResponse(status_code=401, content=song_artists)
+    return JSONResponse(content=song_artists)
+
+
+@app.get("/table_l_song_bands", summary="Song Bands", tags=["Lyrics Slide Show"])
+async def table_l_song_bands(api_key: str = Query(..., description="API Key for access")):
+    """
+    # all song bands
+    ## json
+    - DUMP of l_song_bands table
+    - only INSERT SQL command
+
+    ## doc
+    - **api_key:** secret key to access this endpoint
+
+    ## url
+    - /table_l_song_bands?api_key=abcde
+    """
+    db = cARThographieDB()
+    song_bands = db.table_l_song_bands(api_key)
+    if "error" in song_bands:
+        return JSONResponse(status_code=401, content=song_bands)
+    return JSONResponse(content=song_bands)
+
+
+@app.get("/_table_l_song_genre", summary="Song Genres", tags=["Lyrics Slide Show"])
+async def table_l_song_genre(api_key: str = Query(..., description="API Key for access")):
+    """
+    # all song genres
+    ## json
+    - DUMP of l_song_genres table
+    - only INSERT SQL command
+
+    ## doc
+    - **api_key:** secret key to access this endpoint
+
+    ## url
+    - /table_l_song_genre?api_key=abcde
+    """
+    db = cARThographieDB()
+    song_genres = db.table_l_song_genre(api_key)
+    if "error" in song_genres:
+        return JSONResponse(status_code=401, content=song_genres)
+    return JSONResponse(content=song_genres)
+
+
+@app.get("/table_l_song_link", summary="Song Links", tags=["Lyrics Slide Show"])
+async def table_l_song_link(api_key: str = Query(..., description="API Key for access")):
+    """
+    # all song links
+    ## json
+    - DUMP of l_song_links table
+    - only INSERT SQL command
+
+    ## doc
+    - **api_key:** secret key to access this endpoint
+
+    ## url
+    - /table_l_song_link?api_key=abcde
+    """
+    db = cARThographieDB()
+    song_links = db.table_l_song_link(api_key)
+    if "error" in song_links:
+        return JSONResponse(status_code=401, content=song_links)
+    return JSONResponse(content=song_links)
+
+
+@app.get("/table_l_songs_mod_message", summary="Songs Mod Message", tags=["Lyrics Slide Show"])
+async def table_l_songs_mod_message(api_key: str = Query(..., description="API Key for access")):
+    """
+    # all songs mod message
+    ## json
+    - DUMP of l_songs_mod_message table
+    - only INSERT SQL command
+
+    ## doc
+    - **api_key:** secret key to access this endpoint
+
+    ## url
+    - /table_l_songs_mod_message?api_key=abcde
+    """
+    db = cARThographieDB()
+    songs_mod_message = db.table_l_songs_mod_message(api_key)
+    if "error" in songs_mod_message:
+        return JSONResponse(status_code=401, content=songs_mod_message)
+    return JSONResponse(content=songs_mod_message)
+
+
+@app.get("/table_l_verses", summary="Verses", tags=["Lyrics Slide Show"])
+async def table_l_verses(api_key: str = Query(..., description="API Key for access")):
+    """
+    # all song verses
+    ## json
+    - DUMP of l_verses table
+    - only INSERT SQL command
+
+    ## doc
+    - **api_key:** secret key to access this endpoint
+
+    ## url
+    - /table_l_verses?api_key=abcde
+    """
+    db = cARThographieDB()
+    verses = db.table_l_verses(api_key)
+    if "error" in verses:
+        return JSONResponse(status_code=401, content=verses)
+    return JSONResponse(content=verses)
+
+
+@app.get("/table_l_verse_prefixes", summary="Verse Prefixes", tags=["Lyrics Slide Show"])
+async def table_l_verse_prefixes(api_key: str = Query(..., description="API Key for access")):
+    """
+    # all song verse prefixes
+    ## json
+    - DUMP of l_verse_prefixes table
+    - only INSERT SQL command
+
+    ## doc
+    - **api_key:** secret key to access this endpoint
+
+    ## url
+    - /table_l_verse_prefixes?api_key=abcde
+    """
+    db = cARThographieDB()
+    verse_prefixes = db.table_l_verse_prefixes(api_key)
+    if "error" in verse_prefixes:
+        return JSONResponse(status_code=401, content=verse_prefixes)
+    return JSONResponse(content=verse_prefixes)
 
 
 @app.get("/health", summary="API ready?", tags=["Monitoring"])

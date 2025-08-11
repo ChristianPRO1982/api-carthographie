@@ -355,3 +355,164 @@ SELECT CONCAT('INSERT INTO l_songs VALUES (', song_id, ', "', REPLACE(title, '"'
 
         self.close()
         return json
+    
+
+    def table_l_song_artists(self, api_key: str) -> list:
+        if api_key != os.getenv("API_KEY"):
+            return {"error": "Unauthorized"}
+        
+        self.connect()
+        cursor = self.connection.cursor(dictionary=True)
+        cursor.execute(f"""
+SELECT CONCAT('INSERT INTO l_song_artists VALUES (', song_id, ', ', artist_id, ');') AS value
+  FROM l_song_artists
+""")
+        inserts = cursor.fetchall()
+        cursor.close()
+
+        json = []
+        for insert in inserts:
+            fields = {}
+            fields["INSERT"] = insert
+            json.append(fields)
+
+        self.close()
+        return json
+    
+
+    def table_l_song_bands(self, api_key: str) -> list:
+        if api_key != os.getenv("API_KEY"):
+            return {"error": "Unauthorized"}
+        
+        self.connect()
+        cursor = self.connection.cursor(dictionary=True)
+        cursor.execute(f"""
+SELECT CONCAT('INSERT INTO l_song_bands VALUES (', song_id, ', ', band_id, ');') AS value
+  FROM l_song_bands
+""")
+        inserts = cursor.fetchall()
+        cursor.close()
+
+        json = []
+        for insert in inserts:
+            fields = {}
+            fields["INSERT"] = insert
+            json.append(fields)
+
+        self.close()
+        return json
+
+
+    def _table_l_song_genre(self, api_key: str) -> list:
+        if api_key != os.getenv("API_KEY"):
+            return {"error": "Unauthorized"}
+        
+        self.connect()
+        cursor = self.connection.cursor(dictionary=True)
+        cursor.execute(f"""
+SELECT CONCAT('INSERT INTO l_song_genre VALUES (', song_id, ', ', genre_id, ');') AS value
+  FROM l_song_genre
+""")
+        inserts = cursor.fetchall()
+        cursor.close()
+
+        json = []
+        for insert in inserts:
+            fields = {}
+            fields["INSERT"] = insert
+            json.append(fields)
+
+        self.close()
+        return json
+    
+
+    def table_l_song_link(self, api_key: str) -> list:
+        if api_key != os.getenv("API_KEY"):
+            return {"error": "Unauthorized"}
+        
+        self.connect()
+        cursor = self.connection.cursor(dictionary=True)
+        cursor.execute(f"""
+SELECT CONCAT('INSERT INTO l_song_link VALUES (', song_id, ', "', link, '");') AS value
+  FROM l_song_link
+""")
+        inserts = cursor.fetchall()
+        cursor.close()
+
+        json = []
+        for insert in inserts:
+            fields = {}
+            fields["INSERT"] = insert
+            json.append(fields)
+
+        self.close()
+        return json
+    
+
+    def table_l_songs_mod_message(self, api_key: str) -> list:
+        if api_key != os.getenv("API_KEY"):
+            return {"error": "Unauthorized"}
+
+        self.connect()
+        cursor = self.connection.cursor(dictionary=True)
+        cursor.execute(f"""
+SELECT CONCAT('INSERT INTO l_songs_mod_message VALUES (', message_id, ', ', song_id, ', "', message, '", ', status,', "', date, '");') AS value
+  FROM l_songs_mod_message
+""")
+        inserts = cursor.fetchall()
+        cursor.close()
+
+        json = []
+        for insert in inserts:
+            fields = {}
+            fields["INSERT"] = insert
+            json.append(fields)
+
+        self.close()
+        return json
+    
+
+    def table_l_verses(self, api_key: str) -> list:
+        if api_key != os.getenv("API_KEY"):
+            return {"error": "Unauthorized"}
+        
+        self.connect()
+        cursor = self.connection.cursor(dictionary=True)
+        cursor.execute(f"""
+SELECT CONCAT('INSERT INTO l_verses VALUES (', verse_id, ', ', song_id, ', ', num, ', ', num_verse, ', ', chorus, ', ', followed, ', ', notcontinuenumbering, ', "', text, '", "', IFNULL(prefix, ""), '");') AS value
+  FROM l_verses
+""")
+        inserts = cursor.fetchall()
+        cursor.close()
+
+        json = []
+        for insert in inserts:
+            fields = {}
+            fields["INSERT"] = insert
+            json.append(fields)
+
+        self.close()
+        return json
+    
+
+    def table_l_verse_prefixes(self, api_key: str) -> list:
+        if api_key != os.getenv("API_KEY"):
+            return {"error": "Unauthorized"}
+        
+        self.connect()
+        cursor = self.connection.cursor(dictionary=True)
+        cursor.execute(f"""
+SELECT CONCAT('INSERT INTO l_verse_prefixes VALUES (', prefix_id, ', "', prefix, '", "', comment, '");') AS value
+  FROM l_verse_prefixes
+""")
+        inserts = cursor.fetchall()
+        cursor.close()
+
+        json = []
+        for insert in inserts:
+            fields = {}
+            fields["INSERT"] = insert
+            json.append(fields)
+
+        self.close()
+        return json
