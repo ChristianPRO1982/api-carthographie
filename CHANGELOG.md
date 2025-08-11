@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/ChristianPRO1982/api-carthographie/compare/v2.0.4...v2.1.0) (2025-08-11)
+
+
+### Features
+
+* dump routes list ([c900c98](https://github.com/ChristianPRO1982/api-carthographie/commit/c900c98b73269d8c09251cbc4567efaf24630cce))
+
 ## [2.0.4](https://github.com/ChristianPRO1982/api-carthographie/compare/v2.0.3...v2.0.4) (2025-08-11)
 
 
