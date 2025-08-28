@@ -1,3 +1,10 @@
+## [2.2.1](https://github.com/ChristianPRO1982/api-carthographie/compare/v2.2.0...v2.2.1) (2025-08-28)
+
+
+### Bug Fixes
+
+* cARThographieDB.dump_routes_list updated ([4021ee7](https://github.com/ChristianPRO1982/api-carthographie/commit/4021ee7b45c239a2dd76a574c5b4b4b382ca8d97))
+
 # [2.2.0](https://github.com/ChristianPRO1982/api-carthographie/compare/v2.1.2...v2.2.0) (2025-08-28)
 
 
