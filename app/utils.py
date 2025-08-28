@@ -314,29 +314,6 @@ SELECT CONCAT('INSERT INTO l_genres VALUES (', genre_id, ', "', REPLACE(`group`,
 
         self.close()
         return json
-
-
-    def table_l_site(self, api_key: str) -> list:
-        if api_key != os.getenv("API_KEY"):
-            return {"error": "Unauthorized"}
-        
-        self.connect()
-        cursor = self.connection.cursor(dictionary=True)
-        cursor.execute(f"""
-SELECT CONCAT('INSERT INTO l_site VALUES ("', language, '", "', REPLACE(title, '"', '“'), '", "', REPLACE(title_h1, '"', '“'), '", "', REPLACE(home_text, '"', '“'), '", "', REPLACE(bloc1_text, '"', '“'), '", "', REPLACE(bloc2_text, '"', '“'), '");') AS value
-  FROM l_site
-""")
-        inserts = cursor.fetchall()
-        cursor.close()
-
-        json = []
-        for insert in inserts:
-            fields = {}
-            fields["INSERT"] = insert
-            json.append(fields)
-
-        self.close()
-        return json
     
 
     def table_l_site_params(self, api_key: str) -> list:
@@ -346,7 +323,20 @@ SELECT CONCAT('INSERT INTO l_site VALUES ("', language, '", "', REPLACE(title, '
         self.connect()
         cursor = self.connection.cursor(dictionary=True)
         cursor.execute(f"""
-SELECT CONCAT('INSERT INTO l_site_params VALUES (', verse_max_lines, ', ', verse_max_characters_for_a_line, ', "', REPLACE(FR_chorus_prefix, '"', '“'), '", "', REPLACE(FR_verse_prefix1, '"', '“'), '", "', REPLACE(FR_verse_prefix2, '"', '“'), '", "', REPLACE(EN_chorus_prefix, '"', '“'), '", "', REPLACE(EN_verse_prefix1, '"', '“'), '", "', REPLACE(EN_verse_prefix2, '"', '“'), '");') AS value
+SELECT CONCAT(
+              'INSERT INTO l_site_params VALUES ("',
+              language, '", "',
+              REPLACE(title, '"', '“'), '", "',
+              REPLACE(title_h1, '"', '“'), '", "',
+              REPLACE(home_text, '"', '“'), '", "',
+              REPLACE(bloc1_text, '"', '“'), '", "',
+              REPLACE(bloc2_text, '"', '“'), '", ',
+              verse_max_lines, ', ',
+              verse_max_characters_for_a_line, ', "',
+              REPLACE(chorus_prefix, '"', '“'), '", "',
+              REPLACE(verse_prefix1, '"', '“'), '", "',
+              REPLACE(verse_prefix2, '"', '“'), '");"'
+             ) AS value
   FROM l_site_params
 """)
         inserts = cursor.fetchall()

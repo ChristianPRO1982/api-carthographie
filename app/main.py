@@ -245,48 +245,6 @@ async def table_c_users(api_key: str = Query(..., description="API Key for acces
     return JSONResponse(content=users)
 
 
-@app.get("/table_l_genres", summary="Genres", tags=["Lyrics Slide Show"])
-async def table_l_genres(api_key: str = Query(..., description="API Key for access")):
-    """
-    # all genres
-    ## json
-    - DUMP of c_genres table
-    - only INSERT SQL command
-
-    ## doc
-    - **api_key:** secret key to access this endpoint
-
-    ## url
-    - /table_l_genres?api_key=abcde
-    """
-    db = cARThographieDB()
-    genres = db.table_l_genres(api_key)
-    if "error" in genres:
-        return JSONResponse(status_code=401, content=genres)
-    return JSONResponse(content=genres)
-
-
-@app.get("/table_l_site", summary="Lyrics Sites", tags=["Lyrics Slide Show"])
-async def table_l_site(api_key: str = Query(..., description="API Key for access")):
-    """
-    # all lyrics sites
-    ## json
-    - DUMP of l_site table
-    - only INSERT SQL command
-
-    ## doc
-    - **api_key:** secret key to access this endpoint
-
-    ## url
-    - /table_l_site?api_key=abcde
-    """
-    db = cARThographieDB()
-    lyrics_sites = db.table_l_site(api_key)
-    if "error" in lyrics_sites:
-        return JSONResponse(status_code=401, content=lyrics_sites)
-    return JSONResponse(content=lyrics_sites)
-
-
 @app.get("/table_l_site_params", summary="Lyrics Site Params", tags=["Lyrics Slide Show"])
 async def table_l_site_params(api_key: str = Query(..., description="API Key for access")):
     """
@@ -306,6 +264,27 @@ async def table_l_site_params(api_key: str = Query(..., description="API Key for
     if "error" in lyrics_site_params:
         return JSONResponse(status_code=401, content=lyrics_site_params)
     return JSONResponse(content=lyrics_site_params)
+
+
+@app.get("/table_l_genres", summary="Genres", tags=["Lyrics Slide Show"])
+async def table_l_genres(api_key: str = Query(..., description="API Key for access")):
+    """
+    # all genres
+    ## json
+    - DUMP of c_genres table
+    - only INSERT SQL command
+
+    ## doc
+    - **api_key:** secret key to access this endpoint
+
+    ## url
+    - /table_l_genres?api_key=abcde
+    """
+    db = cARThographieDB()
+    genres = db.table_l_genres(api_key)
+    if "error" in genres:
+        return JSONResponse(status_code=401, content=genres)
+    return JSONResponse(content=genres)
 
 
 @app.get("/table_l_songs", summary="Songs", tags=["Lyrics Slide Show"])
