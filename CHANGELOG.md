@@ -1,3 +1,10 @@
+# [2.2.0](https://github.com/ChristianPRO1982/api-carthographie/compare/v2.1.2...v2.2.0) (2025-08-28)
+
+
+### Features
+
+* new table l_site_params and delete deprecated table l_site ([6afc3c2](https://github.com/ChristianPRO1982/api-carthographie/commit/6afc3c23703bc240b89606c7ce7e673f336117ac))
+
 ## [2.1.2](https://github.com/ChristianPRO1982/api-carthographie/compare/v2.1.1...v2.1.2) (2025-08-11)
 
 
