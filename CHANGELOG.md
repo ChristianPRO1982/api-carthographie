@@ -1,3 +1,10 @@
+## [2.2.2](https://github.com/ChristianPRO1982/api-carthographie/compare/v2.2.1...v2.2.2) (2025-09-01)
+
+
+### Bug Fixes
+
+* bug ([e2a9ff0](https://github.com/ChristianPRO1982/api-carthographie/commit/e2a9ff0d1fcb19e2b57364ac9c09b5a45c4b2728))
+
 ## [2.2.1](https://github.com/ChristianPRO1982/api-carthographie/compare/v2.2.0...v2.2.1) (2025-08-28)
 
 
