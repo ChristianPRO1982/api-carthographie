@@ -181,6 +181,7 @@ async def table_c_group_user_ask_to_join(api_key: str = Query(..., description="
         return JSONResponse(status_code=401, content=group_user_ask_to_join)
     return JSONResponse(content=group_user_ask_to_join)
 
+
 @app.get("/table_c_groups", summary="Groups", tags=["cARThographie"])
 async def table_c_groups(api_key: str = Query(..., description="API Key for access")):
     """
