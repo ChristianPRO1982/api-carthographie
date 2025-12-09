@@ -140,48 +140,6 @@ async def table_c_band_links(api_key: str = Query(..., description="API Key for 
     return JSONResponse(content=band_links)
 
 
-@app.get("/table_c_group_user", summary="Group User", tags=["cARThographie"])
-async def table_c_group_user(api_key: str = Query(..., description="API Key for access")):
-    """
-    # all group users
-    ## json
-    - DUMP of c_group_user table
-    - only INSERT SQL command
-
-    ## doc
-    - **api_key:** secret key to access this endpoint
-
-    ## url
-    - /table_c_group_user?api_key=abcde
-    """
-    db = cARThographieDB()
-    group_users = db.table_c_group_user(api_key)
-    if "error" in group_users:
-        return JSONResponse(status_code=401, content=group_users)
-    return JSONResponse(content=group_users)
-
-
-@app.get("/table_c_group_user_ask_to_join", summary="Group User Ask to Join", tags=["cARThographie"])
-async def table_c_group_user_ask_to_join(api_key: str = Query(..., description="API Key for access")):
-    """
-    # all group user ask to join
-    ## json
-    - DUMP of c_group_user_ask_to_join table
-    - only INSERT SQL command
-
-    ## doc
-    - **api_key:** secret key to access this endpoint
-
-    ## url
-    - /table_c_group_user_ask_to_join?api_key=abcde
-    """
-    db = cARThographieDB()
-    group_user_ask_to_join = db.table_c_group_user_ask_to_join(api_key)
-    if "error" in group_user_ask_to_join:
-        return JSONResponse(status_code=401, content=group_user_ask_to_join)
-    return JSONResponse(content=group_user_ask_to_join)
-
-
 @app.get("/table_c_groups", summary="Groups", tags=["cARThographie"])
 async def table_c_groups(api_key: str = Query(..., description="API Key for access")):
     """
@@ -201,48 +159,6 @@ async def table_c_groups(api_key: str = Query(..., description="API Key for acce
     if "error" in groups:
         return JSONResponse(status_code=401, content=groups)
     return JSONResponse(content=groups)
-
-
-@app.get("/table_c_user_change_email", summary="User Change Email", tags=["cARThographie"])
-async def table_c_user_change_email(api_key: str = Query(..., description="API Key for access")):
-    """
-    # all user change email requests
-    ## json
-    - DUMP of c_user_change_email table
-    - only INSERT SQL command
-
-    ## doc
-    - **api_key:** secret key to access this endpoint
-
-    ## url
-    - /table_c_user_change_email?api_key=abcde
-    """
-    db = cARThographieDB()
-    user_change_email = db.table_c_user_change_email(api_key)
-    if "error" in user_change_email:
-        return JSONResponse(status_code=401, content=user_change_email)
-    return JSONResponse(content=user_change_email)
-
-
-@app.get("/table_c_users", summary="Users", tags=["cARThographie"])
-async def table_c_users(api_key: str = Query(..., description="API Key for access")):
-    """
-    # all users
-    ## json
-    - DUMP of c_users table
-    - only INSERT SQL command
-
-    ## doc
-    - **api_key:** secret key to access this endpoint
-
-    ## url
-    - /table_c_users?api_key=abcde
-    """
-    db = cARThographieDB()
-    users = db.table_c_users(api_key)
-    if "error" in users:
-        return JSONResponse(status_code=401, content=users)
-    return JSONResponse(content=users)
 
 
 @app.get("/table_l_site_params", summary="Lyrics Site Params", tags=["Lyrics Slide Show"])

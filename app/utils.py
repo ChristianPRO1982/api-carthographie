@@ -67,11 +67,7 @@ SELECT CEIL(COUNT(1) / {self.SQL_LIMIT}) AS pages,
             {"route": "/table_c_artist_links", "table": "c_artist_links"},
             {"route": "/table_c_bands", "table": "c_bands"},
             {"route": "/table_c_band_links", "table": "c_band_links"},
-            {"route": "/table_c_group_user", "table": "c_group_user"},
-            {"route": "/table_c_group_user_ask_to_join", "table": "c_group_user_ask_to_join"},
             {"route": "/table_c_groups", "table": "c_groups"},
-            {"route": "/table_c_user_change_email", "table": "c_user_change_email"},
-            {"route": "/table_c_users", "table": "c_users"},
             {"route": "/table_l_site_params", "table": "l_site_params"},
             {"route": "/table_l_genres", "table": "l_genres"},
             {"route": "/table_l_songs", "table": "l_songs"},
@@ -178,52 +174,6 @@ SELECT CONCAT('INSERT INTO c_band_links VALUES (', band_id, ', "', REPLACE(link,
         return json
     
 
-    def table_c_group_user(self, api_key: str) -> list:
-        if api_key != os.getenv("API_KEY"):
-            return {"error": "Unauthorized"}
-        
-        self.connect()
-        cursor = self.connection.cursor(dictionary=True)
-        cursor.execute(f"""
-SELECT CONCAT('INSERT INTO c_group_user VALUES (', group_id, ', "', username,'", ', admin, ');') AS value
-  FROM c_group_user
-""")
-        inserts = cursor.fetchall()
-        cursor.close()
-
-        json = []
-        for insert in inserts:
-            fields = {}
-            fields["INSERT"] = insert
-            json.append(fields)
-
-        self.close()
-        return json
-    
-
-    def table_c_group_user_ask_to_join(self, api_key: str) -> list:
-        if api_key != os.getenv("API_KEY"):
-            return {"error": "Unauthorized"}
-        
-        self.connect()
-        cursor = self.connection.cursor(dictionary=True)
-        cursor.execute(f"""
-SELECT CONCAT('INSERT INTO c_group_user_ask_to_join VALUES (', group_id, ', "', username,'");') AS value
-  FROM c_group_user_ask_to_join
-""")
-        inserts = cursor.fetchall()
-        cursor.close()
-
-        json = []
-        for insert in inserts:
-            fields = {}
-            fields["INSERT"] = insert
-            json.append(fields)
-
-        self.close()
-        return json
-    
-
     def table_c_groups(self, api_key: str) -> list:
         if api_key != os.getenv("API_KEY"):
             return {"error": "Unauthorized"}
@@ -233,51 +183,6 @@ SELECT CONCAT('INSERT INTO c_group_user_ask_to_join VALUES (', group_id, ', "', 
         cursor.execute(f"""
 SELECT CONCAT('INSERT INTO c_groups VALUES (', group_id, ', "', name,'", "', REPLACE(info, '"', '“'),'", "', IFNULL(token, ""), '", ', private, ');') AS value
   FROM c_groups
-""")
-        inserts = cursor.fetchall()
-        cursor.close()
-
-        json = []
-        for insert in inserts:
-            fields = {}
-            fields["INSERT"] = insert
-            json.append(fields)
-
-        self.close()
-        return json
-    
-
-    def table_c_user_change_email(self, api_key: str) -> list:
-        if api_key != os.getenv("API_KEY"):
-            return {"error": "Unauthorized"}
-        
-        self.connect()
-        cursor = self.connection.cursor(dictionary=True)
-        cursor.execute(f"""
-SELECT CONCAT('INSERT INTO c_user_change_email VALUES ("', username, '", "', token, '", "', create_time, '", "', last_email, '", "', new_email, '");') AS value
-  FROM c_user_change_email
-""")
-        inserts = cursor.fetchall()
-        cursor.close()
-
-        json = []
-        for insert in inserts:
-            fields = {}
-            fields["INSERT"] = insert
-            json.append(fields)
-
-        self.close()
-        return json
-
-    def table_c_users(self, api_key: str) -> list:
-        if api_key != os.getenv("API_KEY"):
-            return {"error": "Unauthorized"}
-        
-        self.connect()
-        cursor = self.connection.cursor(dictionary=True)
-        cursor.execute(f"""
-SELECT CONCAT('INSERT INTO c_users VALUES ("', username,'", "', REPLACE(theme, '"', '“'),'");') AS value
-  FROM c_users
 """)
         inserts = cursor.fetchall()
         cursor.close()
