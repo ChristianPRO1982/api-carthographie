@@ -1,3 +1,10 @@
+## [2.2.3](https://github.com/ChristianPRO1982/api-carthographie/compare/v2.2.2...v2.2.3) (2025-12-09)
+
+
+### Bug Fixes
+
+* delete all routes with user's data ([0f7950d](https://github.com/ChristianPRO1982/api-carthographie/commit/0f7950d9204df7cb54356824d1585fdccc1bb7b3))
+
 ## [2.2.2](https://github.com/ChristianPRO1982/api-carthographie/compare/v2.2.1...v2.2.2) (2025-09-01)
 
 
